@@ -1,0 +1,27 @@
+{
+  "name": "movie_api",
+  "version": "1.0.0",
+  "description": "Server-side component of a web app that provides users with access to info about different movies, directors, and genres.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "Emily Nichols",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emnnichols/movie_api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/emnnichols/movie_api/issues"
+  },
+  "homepage": "https://github.com/emnnichols/movie_api#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "install": "^0.13.0",
+    "npm": "^10.2.5"
+  }
+}
