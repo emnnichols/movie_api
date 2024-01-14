@@ -300,6 +300,128 @@ app.use(morgan('combined', {stream: accessLogStream}));
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
+// Get list of all movies
+app.get('/movies', (req, res) => {
+    res.json(movies);
+});
+
+// Get data about single movie
+app.get('/movies/:title', (req, res) => {
+    res.json(movies.find((movie) => {
+            return movie.title === req.params.title;
+        })
+    );
+});
+
+// Get a list of movies by year
+app.get('/movies/year/:year', (req, res) => {
+    res.json(movies.filter((movies) => {
+            return movies.year === parseInt(req.params.year);
+        })
+    );
+});
+
+// Get list of movies by genre
+app.get('/movies/genres/:genre', (req, res) => {
+    res.json(movies.filter((movies) => {
+        return movies.genre == req.params.genre;
+    })
+);
+});
+
+// Get data about a genre
+app.get('/genres/:genre/about', (req, res) => {
+    res.json(genres.filter((genre) => {
+        return genre.name === req.params.genre;
+    }))
+});
+
+// Get list of all genres
+app.get('/genres', (req, res) => {
+    res.json(genres);
+});
+
+// Get list of movies by director
+app.get('/movies/directors/:director', (req, res) => {
+    res.json(movies.filter((movie) => {
+            return movie.director === req.params.director;
+        })
+    );
+});
+
+// Get data about a director
+app.get('/movies/directors/:director/about', (req, res) => {
+    res.json(directors.filter((director) => {
+        return director.name === req.params.director;
+    })
+);
+});
+
+// Get list of users
+app.get('/users', (req, res) => {
+    res.json(users);
+});
+
+// Add user
+app.post('/users', (req, res) => {
+    const newUser = req.body;
+
+    if (newUser.name) {
+        newUser.id = uuid.v4();
+        users.push(newUser);
+        res.status(201).json(newUser)
+    } else {
+        res.status(400).send('New user needs a name!')
+    }
+})
+
+// Update username
+app.put('/users/:username', (req, res) => {
+    let updatedUser = req.body;
+    let user = users.find((user) => { return user.username == req.params.username });
+
+    if (user) {
+        user.username = updatedUser.username;
+        res.status(200).send('Username updated!');
+    } else {
+        res.status(400).send('User not updated!')
+    }
+});
+
+// Delete user
+app.delete('/users/:username', (req, res) => {
+    let user = users.find((user) => { return user.username === req.params.username });
+
+    if (user) {
+        users = users.filter((obj) => { return obj.username !== req.params.username });
+        res.status(201).send('User ' + req.params.username + ' was deleted.');
+    }
+});
+
+// Add movie to favorites
+app.post('/users/:username/movies', (req, res) => {
+    let newMovie = req.body;
+    let user = users.find((user) => { return user.username == req.params.username });
+
+    if (newMovie.title) {
+        user.movies.push(newMovie);
+        res.status(201).send(newMovie.title + ' added to favorites!');
+    } else {
+        const message = 'Movie does not exist!';
+        res.status(400).send(message);
+    }
+});
+
+// Delete movie from favorites
+app.delete('/users/:username/movies/:title', (req, res) => {
+    let user = users.find((user) => { return user.username === req.params.username });
+
+    if (user) {
+        user.movies = user.movies.filter((obj) => { return obj.title !== req.params.title });
+        res.status(201).send('The movie, ' + req.params.title + ' was removed.');
+    }
+});
+
 // Get API documentation
 app.get('/documentation', (req, res) => {
     res.sendFile('public/documentation.html', { root: __dirname });
