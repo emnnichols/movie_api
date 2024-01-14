@@ -3,12 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentation</title>
+    <title>myFlix Documentation</title>
 </head>
 <body>
-    <h1>myFlix -- A REST API</h1>
+    <h1>Studio Ghibli API</h1>
     <h2>Description</h2>
-    <p>The server-side component of a 'movies' web application that will provide users with access to information about different movies, directors, and genres.
+    <p>The server-side component of a web application that will provide users with access to information about Studio Ghibli films.
         <br>Users will be able to sign up, update their personal information, and create a list of their favorite movies.</p>
+        <br>
+    <h2>Supported Requests</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Request</th>
+                <th scope="col">URL</th>
+                <th scope="col">HTTP Method</th>
+                <th scope="col">Request body data format</th>
+                <th scope="col">Response body data format</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Get a list of all movies</td>
+                <td>/movies</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object with data about all the movies</td>
+            </tr>
+            <tr>
+                <td>Get data about a single movie by name</td>
+                <td>/movies/[title]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object with data about a single movie, example:
+                    <br>{
+                        <br>id: #,
+                        <br>title: 'movie name',
+                        <br>director: 'first last',
+                        <br>year: ####,
+                        <br>genre: 'genre'
+                    <br>}
+                </td>
+            </tr>
+            <tr>
+                <td>Get a list of movies by year</td>
+                <td>/movies/year/[year]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object with data about movies from a specific year</td>
+            </tr>
+            <tr>
+                <td>Get list of movies by genre</td>
+                <td>/movies/genres/[genre]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object with data about movies with a specific genre</td>
+            </tr>
+            <tr>
+                <td>Get data about a genre</td>
+                <td>/genres/[genre]/about</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object with data about a genre, example:
+                    <br>{
+                        <br>id: #,
+                        <br>genre: 'genre',
+                        <br>description: 'desc'
+                    <br>}
+                </td>
+            </tr>
+            <tr>
+                <td>Get list all genres</td>
+                <td>/genres</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object with data about all available genres</td>
+            </tr>
+            <tr>
+                <td>Get a list of movies by a director</td>
+                <td>/movies/directors/[director]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object with data about movies from a specific director</td>
+            </tr>
+            <tr>
+                <td>Get data about a director</td>
+                <td>/movies/directors/[director]/about</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object with data about a director, example:
+                    <br>{
+                        <br>id: #,
+                        <br>name: 'first last',
+                        <br>birthday: ####,
+                        <br>bio: 'bio'
+                    <br>}
+                </td>
+            </tr>
+            <tr>
+                <td>Get a list of all users</td>
+                <td>/users</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object with data about all users</td>
+            </tr>
+            <tr>
+                <td>Add a user</td>
+                <td>/users</td>
+                <td>POST</td>
+                <td>A JSON object with data about the user to be added, example:
+                    <br>{
+                        <br>username: 'username',
+                        <br>name: 'first last',
+                        <br>email: 'email',
+                        <br>movies: []
+                    <br>}
+                </td>
+                <td>A JSON object with data about the user added along with an ID, example:
+                    <br>{
+                        <br>username: 'username',
+                        <br>name: 'first last',
+                        <br>email: 'email',
+                        <br>movies: [],
+                        <br>id: ####
+                    <br>}</td>
+            </tr>
+            <tr>
+                <td>Update a username</td>
+                <td>/users/[username]</td>
+                <td>PUT</td>
+                <td>None</td>
+                <td>A text message indicating the username has been updated</td>
+            </tr>
+            <tr>
+                <td>Delete a user</td>
+                <td>/users/[username]</td>
+                <td>DELETE</td>
+                <td>None</td>
+                <td>A text message indicating the user has been deleted sucessfully</td>
+            </tr>
+            <tr>
+                <td>Add a movie to favorites</td>
+                <td>/users/[username]/movies</td>
+                <td>POST</td>
+                <td>A JSON object with data about the movie to be added, example:
+                    <br>{
+                        <br>id: #,
+                        <br>title: 'movie name',
+                        <br>director: 'first last',
+                        <br>year: ####,
+                        <br>genre(s): {genre: 'genre'}
+                    <br>}
+                </td>
+                <td>A text message indicating the movie has been added</td>
+            </tr>
+            <tr>
+                <td>Remove a movie from favorites</td>
+                <td>/users/[username]/movies/[title]</td>
+                <td>DELETE</td>
+                <td>None</td>
+                <td>A text message indicating the movie has been removed from favorites list</td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>
