@@ -30,6 +30,11 @@ let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
 
+// Index page
+app.get('/', (req, res) => {
+    res.send('Welcome to myFlix!');
+})
+
 // Get list of all movies
 app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
     await Movies.find()
