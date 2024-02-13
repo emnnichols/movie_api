@@ -30,11 +30,6 @@ let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
 
-// Index page
-app.get('/', (req, res) => {
-    res.send();
-})
-
 // Get list of all movies
 app.get('/movies', async (req, res) => {
     await Movies.find()
