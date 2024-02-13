@@ -32,7 +32,7 @@ require('./passport');
 
 // Index page
 app.get('/', (req, res) => {
-    res.send('Welcome to myFlix!');
+    res.send("Welcome!");
 })
 
 // Get list of all movies
