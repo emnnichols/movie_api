@@ -135,7 +135,7 @@ app.get('/users', passport.authenticate('jwt', { session: false }), async (req, 
 });
 
 // Get a user by username
-app.get('/users/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get('/profile/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
@@ -191,7 +191,7 @@ app.post('/signup',
 })
 
 // Update user info by username
-app.put('/users/:username', 
+app.put('/profile/:username', 
 [
     check('Username', 'Username is required').isLength({min: 5}),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -229,7 +229,7 @@ app.put('/users/:username',
 });
 
 // Delete user by username
-app.delete('/users/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.delete('/profile/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
@@ -248,7 +248,7 @@ app.delete('/users/:username', passport.authenticate('jwt', { session: false }),
   });
 
 // Add movie to favorites
-app.post('/users/:username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.post('/profile/:username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
@@ -266,7 +266,7 @@ app.post('/users/:username/movies/:movieId', passport.authenticate('jwt', { sess
 });
 
 // Delete movie from favorites
-app.delete('/users/:username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.delete('/profile/:username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
