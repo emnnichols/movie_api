@@ -205,10 +205,10 @@ app.put('/profile/:Username/account',
         return res.status(422).json({ errors: errors.array() });
     }
 
+    const user = await Users.findOne(req.params.Username);
+
     let hashedCurrent = Users.hashPassword(req.body.OldPassword);
     let hashedPassword = Users.hashPassword(req.body.Password);
-
-    const user = await User.findOne(req.params.Username);
 
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
