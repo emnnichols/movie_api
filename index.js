@@ -205,6 +205,13 @@ app.put('/profile/:Username/account',
         return res.status(422).json({ errors: errors.array() });
     }
 
+    let currentPassword = req.user.Password;
+    let hashedCurrent = Users.hashPassword(req.body.oldPassword);
+
+    if(hashedCurrent !== currentPassword){
+      return res.status(400).send('Incorrect password')
+    }
+
     let hashedPassword = Users.hashPassword(req.body.Password);
 
     if(req.user.Username !== req.params.Username){
