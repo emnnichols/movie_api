@@ -135,11 +135,11 @@ app.get('/users', passport.authenticate('jwt', { session: false }), async (req, 
 });
 
 // Get a user by username
-app.get('/profile/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    if(req.user.Username !== req.params.username){
+app.get('/profile/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
-    await Users.findOne({ Username: req.params.username })
+    await Users.findOne({ Username: req.params.Username })
         .then((user) => {
             res.json(user);
         })
@@ -191,7 +191,7 @@ app.post('/signup',
 })
 
 // Update user info by username
-app.put('/profile/:username/account', 
+app.put('/profile/:Username/account', 
 [
     check('Username', 'Username is required').isLength({min: 5}),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -207,10 +207,10 @@ app.put('/profile/:username/account',
 
     let hashedPassword = Users.hashPassword(req.body.Password);
 
-    if(req.user.Username !== req.params.username){
+    if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
-    await Users.findOneAndUpdate({ Username: req.params.username }, { $set: 
+    await Users.findOneAndUpdate({ Username: req.params.Username }, { $set: 
         {
             Username: req.body.Username,
             Password: hashedPassword,
@@ -229,7 +229,7 @@ app.put('/profile/:username/account',
 });
 
 // Delete user by username
-app.delete('/profile/:username/account', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.delete('/profile/:Username/account', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
