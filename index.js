@@ -212,7 +212,7 @@ app.put('/profile/:Username/account',
         return res.status(400).send('Permission denied');
     }
 
-    await Users.findOne({ Username: req.user.Username })
+    await Users.findOne({ Username: req.params.Username })
     .then((user) => {if(hashedCurrent !== req.user.Password){
       return res.status(400).send('Incorrect password')
     }});
