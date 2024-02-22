@@ -205,17 +205,16 @@ app.put('/profile/:Username/account',
         return res.status(422).json({ errors: errors.array() });
     }
 
-    let hashedCurrent = Users.hashPassword(req.body.OldPassword);
-    let hashedPassword = Users.hashPassword(req.body.Password);
-
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
 
-    await Users.findOne({ Username: req.params.Username })
-    .then((user) => {if(hashedCurrent !== req.user.Password){
+    let isValidPassword = await Users.hashPassword.compare(OldPassword, req.user.Password);
+    if(!isValidPassword){
       return res.status(400).send('Incorrect password')
-    }});
+    };
+
+    let hashedPassword = Users.hashPassword(req.body.Password);
 
     await Users.findOneAndUpdate({ Username: req.params.Username }, { $set: 
         {
