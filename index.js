@@ -191,7 +191,7 @@ app.post('/signup',
 })
 
 // Update user info by username
-app.put('/profile/:username', 
+app.put('/profile/:username/account', 
 [
     check('Username', 'Username is required').isLength({min: 5}),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -229,7 +229,7 @@ app.put('/profile/:username',
 });
 
 // Delete user by username
-app.delete('/profile/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.delete('/profile/:username/account', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
