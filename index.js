@@ -205,6 +205,8 @@ app.put('/profile/:Username/account',
         return res.status(422).json({ errors: errors.array() });
     }
 
+    let hashedPassword = Users.hashPassword(req.body.Password);
+
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
