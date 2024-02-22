@@ -195,7 +195,7 @@ app.put('/profile/:Username/account',
 [
     check('Username', 'Username is required').isLength({min: 5}),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-    check('OldPassword', 'Password is required').not().isEmpty(),
+    check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail()
 ], passport.authenticate('jwt', { session: false }), async (req, res) => {
 
@@ -205,19 +205,11 @@ app.put('/profile/:Username/account',
         return res.status(422).json({ errors: errors.array() });
     }
 
+    let hashedPassword = Users.hashPassword(req.body.Password);
+
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
-
-    let user = Users.findOne({ Username: req.params.Username });
-
-    let isValidPassword = await user.hashPassword.compare(OldPassword, user.Password);
-    if(!isValidPassword){
-      return res.status(400).send('Incorrect password')
-    };
-
-    let hashedPassword = Users.hashPassword(req.body.Password);
-
     await Users.findOneAndUpdate({ Username: req.params.Username }, { $set: 
         {
             Username: req.body.Username,
