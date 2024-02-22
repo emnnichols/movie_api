@@ -136,10 +136,10 @@ app.get('/users', passport.authenticate('jwt', { session: false }), async (req, 
 
 // Get a user by username
 app.get('/profile/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    if(req.user.Username !== req.params.Username){
+    if(req.user.Username !== req.params.username){
         return res.status(400).send('Permission denied');
     }
-    await Users.findOne({ Username: req.params.Username })
+    await Users.findOne({ Username: req.params.username })
         .then((user) => {
             res.json(user);
         })
@@ -207,10 +207,10 @@ app.put('/profile/:username/account',
 
     let hashedPassword = Users.hashPassword(req.body.Password);
 
-    if(req.user.Username !== req.params.Username){
+    if(req.user.Username !== req.params.username){
         return res.status(400).send('Permission denied');
     }
-    await Users.findOneAndUpdate({ Username: req.params.Username }, { $set: 
+    await Users.findOneAndUpdate({ Username: req.params.username }, { $set: 
         {
             Username: req.body.Username,
             Password: hashedPassword,
