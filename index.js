@@ -205,7 +205,7 @@ app.put('/profile/:Username/account',
         return res.status(422).json({ errors: errors.array() });
     }
 
-    const user = await Users.findOne({ Username: req.params.Username }).then((user)=>{JSON.parse(user)});
+    const user = await Users.findOne({ Username: req.params.Username });
 
     let hashedCurrent = Users.hashPassword(req.body.OldPassword);
     let hashedPassword = Users.hashPassword(req.body.Password);
