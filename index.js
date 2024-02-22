@@ -198,14 +198,17 @@ app.put('/profile/:Username/account',
     check('OldPassword', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail()
 ], passport.authenticate('jwt', { session: false }), async (req, res) => {
+
     let errors = validationResult(req);
+
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
     }
-    let hashedPassword = Users.hashPassword(req.body.Password);
+
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
+
     await Users.findOneAndUpdate({ Username: req.params.Username }, { $set: 
         {
             Username: req.body.Username,
