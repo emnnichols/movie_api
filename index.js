@@ -205,17 +205,18 @@ app.put('/profile/:Username/account',
         return res.status(422).json({ errors: errors.array() });
     }
 
-    const user = await Users.findOne({ Username: req.params.Username });
-
     let hashedCurrent = Users.hashPassword(req.body.OldPassword);
     let hashedPassword = Users.hashPassword(req.body.Password);
 
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
-    if(hashedCurrent !== user.Password){
+
+    await Users.findOne({ Username: req.user.Username })
+    .then((user) => {if(hashedCurrent !== req.user.Password){
       return res.status(400).send('Incorrect password')
-    }
+    }});
+
     await Users.findOneAndUpdate({ Username: req.params.Username }, { $set: 
         {
             Username: req.body.Username,
