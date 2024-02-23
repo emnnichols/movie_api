@@ -152,10 +152,12 @@ app.get('/profile/:Username', passport.authenticate('jwt', { session: false }), 
 // Add user
 app.post('/signup',
     [
-        check('Username', 'Username is required').isLength({min: 5}),
-        check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-        check('Password', 'Password is required').not().isEmpty(),
-        check('Email', 'Email does not appear to be valid').isEmail()
+      check('Username', 'Username is required').not().isEmpty(),
+      check('Username', 'Username is too short').isLength({min: 5}),
+      check('Username', 'Username contains non alphanumeric characters').isAlphanumeric(),
+      check('Password', 'Password is required').not().isEmpty(),
+      check('Password', 'Password is too short').isLength({min: 8}),
+      check('Email', 'Email does not appear to be valid').isEmail()
     ], async (req, res) => {
 
         let errors = validationResult(req);
