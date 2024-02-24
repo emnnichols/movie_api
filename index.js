@@ -258,7 +258,7 @@ app.post('/profile/:Username/movies/:movieId', passport.authenticate('jwt', { se
         return res.status(400).send('Permission denied');
     }
     await Users.findOneAndUpdate({ Username: req.params.Username }, {
-        $push: { FavoriteMovies: req.params.movieId }
+        $push: { FavoriteMovies: req.params.MovieID }
     },
     { new: true })
     .then((updatedUser) => {
@@ -276,7 +276,7 @@ app.delete('/profile/:Username/movies/:movieId', passport.authenticate('jwt', { 
         return res.status(400).send('Permission denied');
     }
     await Users.findOneAndUpdate({ Username: req.params.Username }, {
-        $pull: { FavoriteMovies: req.params.movieId }
+        $pull: { FavoriteMovies: req.params.MovieID }
     },
     { new: true })
     .then((updatedUser) => {
