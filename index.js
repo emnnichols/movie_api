@@ -120,11 +120,11 @@ app.get('/movies/directors/:director/about', passport.authenticate('jwt', { sess
 });
 
 // Get list of users
-app.get('/users', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    if(req.user.Username !== req.params.Username){
-        return res.status(400).send('Permission denied');
-    }
-    await Users.find()
+app.get('/profile', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    // if(req.user.Username !== req.params.Username){
+    //     return res.status(400).send('Permission denied');
+    // }
+    await Users.findOne(req.user.Username)
         .then((users) => {
             res.status(201).json(users);
         })
