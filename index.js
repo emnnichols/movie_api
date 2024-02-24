@@ -253,7 +253,7 @@ app.delete('/profile/:Username/account', passport.authenticate('jwt', { session:
   });
 
 // Add movie to favorites
-app.post('/profile/:username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.post('/profile/:Username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
@@ -271,7 +271,7 @@ app.post('/profile/:username/movies/:movieId', passport.authenticate('jwt', { se
 });
 
 // Delete movie from favorites
-app.delete('/profile/:username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.delete('/profile/:Username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
     }
