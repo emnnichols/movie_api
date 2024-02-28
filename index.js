@@ -110,8 +110,8 @@ app.get('/movies/directors/:director', passport.authenticate('jwt', { session: f
 // Get data about a director
 app.get('/movies/directors/:director/about', passport.authenticate('jwt', { session: false }), async (req, res) => {
     await Movies.findOne({ "Director.Name": req.params.director })
-        .then((movie) => {
-            res.json(movie.director);
+        .then((movies) => {
+            res.json(movies.Director);
         })
         .catch((err) => {
             console.error(err);
