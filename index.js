@@ -73,7 +73,7 @@ app.get('/movies/year/:released', passport.authenticate('jwt', { session: false 
 
 // Get list of movies by genre
 app.get('/movies/genres/:genre', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    await Movies.find({ "Genre.Name": req.params.Genre })
+    await Movies.find({ "Genre.Name": req.params.genre })
         .then((movies) => {
             res.json(movies);
         })
@@ -85,7 +85,7 @@ app.get('/movies/genres/:genre', passport.authenticate('jwt', { session: false }
 
 // Get data about a genre
 app.get('/movies/genres/:genre/about', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    await Movies.findOne({ "Genre.Name": req.params.Genre })
+    await Movies.findOne({ "Genre.Name": req.params.genre })
         .then((movie) => {
             res.json(movie.Genre);
         })
