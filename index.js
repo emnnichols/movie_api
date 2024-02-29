@@ -61,7 +61,7 @@ app.get('/movies/:movieId', passport.authenticate('jwt', { session: false }), as
 
 // Get a list of movies by year
 app.get('/movies/year/:released', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    await Movies.find({ Released: req.params.Released })
+    await Movies.find({ Released: req.params.released })
         .then((movies) => {
             res.json(movies);
         })
