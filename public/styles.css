@@ -1,0 +1,28 @@
+.tableHeaders {
+  font-size: 15px;
+  text-align: center;
+}
+
+.headerBorder {
+  padding: 10px 5px;
+  min-width: 250px;
+  border-bottom: 1px solid black;
+  border-right: 1px dashed black; 
+}
+
+.cellBorder {
+  padding: 20px 0px;
+  border-right: 1px dashed black; 
+  border-bottom: 1px solid black;
+}
+
+.bottomCellBorder {
+  padding: 20px 0px;
+  border-bottom: none;
+  border-right: 1px dashed black; 
+}
+
+.dataType {
+  color: rgb(162, 159, 159);
+  font-style: italic;
+}

@@ -1,223 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>myFlix Documentation</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>myFlix Documentation</title>
 </head>
+
 <body>
-    <h1>Studio Ghibli API</h1>
-    <h2>Description</h2>
-    <p>The server-side component of a web application that will provide users with access to information about Studio Ghibli films.
-        <br>Users will be able to sign up, update their personal information, and create a list of their favorite movies.</p>
-        <br>
-    <h2>Supported Requests</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Request</th>
-                <th scope="col">URL</th>
-                <th scope="col">HTTP Method</th>
-                <th scope="col">Request body data format</th>
-                <th scope="col">Response body data format</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Get a list of all movies</td>
-                <td>/movies</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>An array of JSON objects with data about all the movies, example:
-                    <br>[{
-                        <br>id: #,
-                        <br>Title: 'movie name',
-                        <br>Description: 'desc',
-                        <br>Genre: {Name: '', Description: ''},
-                        <br>Director: {Name: '', Bio: '', Birth '', Death: ''},
-                        <br>Released: ####,
-                        <br>ImagePath: 'image.jpeg',
-                        <br>featured: true/false
-                    <br>},{...},{...}]
-                </td>
-            </tr>
-            <tr>
-                <td>Get data about a single movie by name</td>
-                <td>/movies/:Title</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>A JSON object with data about a single movie, example:
-                    <br>{
-                        <br>id: #,
-                        <br>Title: 'movie name',
-                        <br>Description: 'desc',
-                        <br>Genre: {Name: '', Description: ''},
-                        <br>Director: {Name: '', Bio: '', Birth '', Death: ''},
-                        <br>Released: ####,
-                        <br>ImagePath: 'image.jpeg',
-                        <br>featured: true/false
-                    <br>}
-                </td>
-            </tr>
-            <tr>
-                <td>Get a list of movies by year</td>
-                <td>/movies/year/:Released</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>A JSON object with data about movies from a specific year</td>
-            </tr>
-            <tr>
-                <td>Get list of movies by genre</td>
-                <td>/movies/genres/:Genre</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>A JSON object with data about movies with a specific genre</td>
-            </tr>
-            <tr>
-                <td>Get data about a genre</td>
-                <td>/movies/genres/:Genre/about</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>A JSON object with data about a genre, example:
-                    <br>{
-                        <br>Name: 'genre',
-                        <br>Description: 'desc'
-                    <br>}
-                </td>
-            </tr>
-            <tr>
-                <td>Get a list of movies by a director</td>
-                <td>/movies/directors/:Director</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>A JSON object with data about movies from a specific director</td>
-            </tr>
-            <tr>
-                <td>Get data about a director</td>
-                <td>/movies/directors/:Director/about</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>A JSON object with data about a director, example:
-                    <br>{
-                        <br>Name: 'first last',
-                        <br>Bio: 'bio',
-                        <br>Birth: 'MM DD, YYYY',
-                        <br>Death: 'MM DD, YYYY'
-                    <br>}
-                </td>
-            </tr>
-            <tr>
-                <td>Get a list of all users</td>
-                <td>/users</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>An array of JSON objects with data about all users</td>
-            </tr>
-            <tr>
-                <td>Get a user by username</td>
-                <td>/users/:Username</td>
-                <td>GET</td>
-                <td>None</td>
-                <td>A JSON object with data about a user:
-                    <br>{
-                        <br>id: #,
-                        <br>Username: 'username',
-                        <br>Password: 'password',
-                        <br>Email: 'email',
-                        <br>Birthday: date,
-                        <br>FavoriteMovies: [movies]
-                    <br>}
-                </td>
-            </tr>
-            <tr>
-                <td>Add a user</td>
-                <td>/users</td>
-                <td>POST</td>
-                <td>A JSON object with data about the user to be added, example:
-                    <br>{
-                        <br>Username: 'username [required]',
-                        <br>Password: 'password [required]',
-                        <br>Email: 'email [required]',
-                        <br>Birthday: date
-                    <br>}
-                </td>
-                <td>A JSON object with data about the user added along with an ID, example:
-                    <br>{
-                        <br>id: #,
-                        <br>Username: 'username',
-                        <br>Password: 'password',
-                        <br>Email: 'email',
-                        <br>Birthday: date,
-                        <br>FavoriteMovies: []
-                    <br>}</td>
-            </tr>
-            <tr>
-                <td>Update user info by username</td>
-                <td>/users/:Username</td>
-                <td>PUT</td>
-                <td>A JSON object with the field and value to be updated, example:
-                    <br>{
-                        <br>"Username": "username",
-                        <br>"Password": "password",
-                        <br>"Email": "updatedemail@email.com"
-                    <br>}
-                </td>
-                <td>A JSON object with all user info with the updated field/value, example:
-                    <br>{
-                        <br>id: #,
-                        <br>Username: 'username',
-                        <br>Password: 'password',
-                        <br>Email: 'updatedEmail',
-                        <br>Birthday: date,
-                        <br>FavoriteMovies: [movies]
-                    <br>}
-                </td>
-            </tr>
-            <tr>
-                <td>Delete a user by username</td>
-                <td>/users/:Username</td>
-                <td>DELETE</td>
-                <td>None</td>
-                <td>A message indicating the user has been deleted sucessfully</td>
-            </tr>
-            <tr>
-                <td>Add a movie to favorites</td>
-                <td>/users/:Username/movies/:MovieID</td>
-                <td>POST</td>
-                <td>None</td>
-                <td>A JSON object of the user with the updated movie list, example:
-                    <br>{
-                        <br>id: #,
-                        <br>Username: 'username',
-                        <br>Password: 'password',
-                        <br>Email: 'email',
-                        <br>Birthday: date,
-                        <br>FavoriteMovies: [
-                                "favmovie1",
-                                "newFavorite"
-                            ]
-                    <br>}
-                </td>
-            </tr>
-            <tr>
-                <td>Remove a movie from favorites</td>
-                <td>/users/:Username/movies/:MovieID</td>
-                <td>DELETE</td>
-                <td>None</td>
-                <td>A JSON object of the user with the updated movie list, example:
-                    <br>{
-                        <br>id: #,
-                        <br>Username: 'username',
-                        <br>Password: 'password',
-                        <br>Email: 'email',
-                        <br>Birthday: date,
-                        <br>FavoriteMovies: [
-                                "favmovie1"
-                            ]
-                    <br>}
-                </td>
-            </tr>
-        </tbody>
-    </table>
+  <h1 style="text-align: center;">ghibliFLIX API</h1>
+  <p style="text-align: center;">The server-side component of a web application that will provide users with access to
+    information about Studio
+    Ghibli films.
+    <br>Users will be able to sign up, update their personal information, and create a list of their favorite movies.
+  </p>
+  <br>
+  <h2 style="text-align: center;">API Endpoints</h2>
+  <table class="table">
+    <thead style="background-color: rgba(226, 236, 235, 0.506);">
+      <tr class="tableHeaders">
+        <th scope="col" class="headerBorder">REQUEST</th>
+        <th scope="col" class="headerBorder">URL</th>
+        <th scope="col" class="headerBorder">HTTP <br> METHOD</th>
+        <th scope="col" class="headerBorder">REQUEST <br> BODY FORMAT</th>
+        <th scope="col" class="headerBorder" style="border-right: none;">RESPONSE <br> BODY FORMAT</th>
+      </tr>
+    </thead>
+    <tbody style="text-align: center;">
+      <tr>
+        <td class="cellBorder">getAllMovies</td>
+        <td class="cellBorder">/movies</td>
+        <td class="cellBorder">GET</td>
+        <td class="cellBorder">None</td>
+        <td class="cellBorder" style="text-align: left; border-right: none;">Array of JSON objects with data for
+          all movies,
+          example:
+          <br>
+          <br>[{
+          <br>id: <span style="color:rgb(162, 159, 159); font-style: italic;">{number}</span>,
+          Title: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          Description: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Genre:
+          { Name: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          Description: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>
+          },
+          <br>Director:
+          { Name: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          Bio: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          Birth <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          Death: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>
+          },
+          <br>Released: <span style="color:rgb(162, 159, 159); font-style: italic;">{number}</span>,
+          ImagePath: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Featured: <span style="color:rgb(162, 159, 159); font-style: italic;">{boolean}</span>
+          <br>},{...},{...}]
+        </td>
+      </tr>
+      <tr>
+        <td class="cellBorder">getMoviesByYear</td>
+        <td class="cellBorder">/movies/year/<span style="color:rgb(162, 159, 159); font-style: italic;">:released</span>
+        </td>
+        <td class="cellBorder">GET</td>
+        <td class="cellBorder">movie.<span style="color:rgb(162, 159, 159); font-style: italic;">released</span></td>
+        <td class="cellBorder" style="text-align: left; border-right: none;">An array of JSON objects with data for
+          movies from a
+          specific year</td>
+      </tr>
+      <tr>
+        <td class="cellBorder">getMoviesByGenre</td>
+        <td class="cellBorder">/movies/genres/<span style="color:rgb(162, 159, 159); font-style: italic;">:genre</span>
+        </td>
+        <td class="cellBorder">GET</td>
+        <td class="cellBorder">movie.<span style="color:rgb(162, 159, 159);">genre</span>.<span
+            style="font-style: italic;">name</span></td>
+        <td class="cellBorder" style="text-align: left; border-right: none;">An array of JSON objects with data for
+          movies with a
+          specific genre</td>
+      </tr>
+      <tr>
+        <td class="cellBorder">getMoviesByDirector</td>
+        <td class="cellBorder">/movies/directors/<span
+            style="color:rgb(162, 159, 159); font-style: italic;">:director</span></td>
+        <td class="cellBorder">GET</td>
+        <td class="cellBorder">movie.<span style="color:rgb(162, 159, 159);">director</span>.<span
+            style="font-style: italic;">name</span></td>
+        <td class="cellBorder" style="text-align: left; border-right: none;">An array of JSON objects with data for
+          movies from a
+          specific director</td>
+      </tr>
+      <tr>
+        <td class="cellBorder">getSingleMovie</td>
+        <td class="cellBorder">/movies/<span style="color:rgb(162, 159, 159); font-style: italic;">:movieId</span></td>
+        <td class="cellBorder">GET</td>
+        <td class="cellBorder">movie.<span style="color:rgb(162, 159, 159); font-style: italic;">_id</span></td>
+        <td class="cellBorder" style="text-align: left; border-right: none;">JSON object with data for single
+          movie, example:
+          <br>
+          <br>{
+          <br>id: <span style="color:rgb(162, 159, 159); font-style: italic;">{number}</span>,
+          Title: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          Description: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Genre:
+          { Name: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          Description: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>
+          },
+          <br>Director:
+          { Name: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          Bio: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          Birth <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          Death: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>
+          },
+          <br>Released: <span style="color:rgb(162, 159, 159); font-style: italic;">{number}</span>,
+          ImagePath: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Featured: <span style="color:rgb(162, 159, 159); font-style: italic;">{boolean}</span>
+          <br>}
+        </td>
+      </tr>
+      <tr>
+        <td class="cellBorder">getGenre</td>
+        <td class="cellBorder">/movies/genres/<span
+            style="color:rgb(162, 159, 159); font-style: italic;">:genre</span>/about</td>
+        <td class="cellBorder">GET</td>
+        <td class="cellBorder">movie.<span style="color:rgb(162, 159, 159);">genre</span>.<span
+            style="font-style: italic;">name</span></td>
+        <td class="cellBorder" style="text-align: left; border-right: none;">A JSON object with data about a genre,
+          example:<br>
+          <br>{
+          <br>Name: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Description: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>
+          <br>}
+        </td>
+      </tr>
+      <tr>
+        <td class="cellBorder">getDirector</td>
+        <td class="cellBorder">/movies/directors/<span
+            style="color:rgb(162, 159, 159); font-style: italic;">:director</span>/about</td>
+        <td class="cellBorder">GET</td>
+        <td class="cellBorder">movie.<span style="color:rgb(162, 159, 159);">director</span>.<span
+            style="font-style: italic;">name</span></td>
+        <td class="cellBorder" style="text-align: left; border-right: none;">A JSON object with data about a director,
+          example:<br>
+          <br>{
+          <br>Name: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Bio: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Birth: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Death: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>
+          <br>}
+        </td>
+      </tr>
+      <tr>
+        <td class="cellBorder">userRegistration</td>
+        <td class="cellBorder">/signup</td>
+        <td class="cellBorder">POST</td>
+        <td class="cellBorder" style="text-align: left;">A JSON object with new user data, example:
+          <br>
+          <br>{
+          <br>Username: <span style="color:rgb(162, 159, 159); font-style: italic;">{string, required}</span>,
+          <br>Password: <span style="color:rgb(162, 159, 159); font-style: italic;">{string, required}</span>,
+          <br>Email: <span style="color:rgb(162, 159, 159); font-style: italic;">{string, required}</span>,
+          <br>Birthday: <span style="color:rgb(162, 159, 159); font-style: italic;">{date}</span>
+          <br>}
+        </td>
+        <td class="cellBorder" style="text-align: left; border-right: none;">A JSON object with new user data
+          and an assigned ID, example:
+          <br>
+          <br>{
+          <br>id: <span style="color:rgb(162, 159, 159); font-style: italic;">{number}</span>,
+          <br>Username: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Password: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Email: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Birthday: <span style="color:rgb(162, 159, 159); font-style: italic;">{date}</span>,
+          <br>FavoriteMovies: <span style="color:rgb(162, 159, 159); font-style: italic;">[ {movie}, {movie} ]</span>
+          <br>}
+        </td>
+      </tr>
+      <tr>
+        <td class="cellBorder">getUserByUsername</td>
+        <td class="cellBorder">/profile/<span style="color:rgb(162, 159, 159); font-style: italic;">:Username</span>
+        </td>
+        <td class="cellBorder">GET</td>
+        <td class="cellBorder">user.<span style="color:rgb(162, 159, 159); font-style: italic;">Username</span></td>
+        <td class="cellBorder" style="text-align: left; border-right: none;">A JSON object with data about a user:
+          <br>
+          <br>{
+          <br>id: <span style="color:rgb(162, 159, 159); font-style: italic;">{number}</span>,
+          <br>Username: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Email: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Birthday: <span style="color:rgb(162, 159, 159); font-style: italic;">{date}</span>,
+          <br>FavoriteMovies: <span style="color:rgb(162, 159, 159); font-style: italic;">[ {movie}, {movie} ]</span>
+          <br>}
+        </td>
+      </tr>
+      <tr>
+        <td class="cellBorder">updateUser</td>
+        <td class="cellBorder">/profile/<span
+            style="color:rgb(162, 159, 159); font-style: italic;">:Username</span>/account</td>
+        <td class="cellBorder">PUT</td>
+        <td class="cellBorder" style="text-align: left;">A JSON object with data to be updated, example:
+          <br>
+          <br>{
+          <br>"Email": <span style="color:rgb(162, 159, 159); font-style: italic;">{updated string}</span>
+          <br>}
+        </td>
+        <td class="cellBorder" style="text-align: left; border-right: none;">A JSON object with all user info with the
+          updated data, example:
+          <br>
+          <br>{
+          <br>id: <span style="color:rgb(162, 159, 159); font-style: italic;">{number}</span>,
+          <br>Username: '<span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Password: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Email: <span style="color:rgb(162, 159, 159); font-style: italic;">{updated string}</span>,
+          <br>Birthday: <span style="color:rgb(162, 159, 159); font-style: italic;">{date}</span>,
+          <br>FavoriteMovies: <span style="color:rgb(162, 159, 159); font-style: italic;">[ {movie}, {movie} ]</span>
+          <br>}
+        </td>
+      </tr>
+      <tr>
+        <td class="cellBorder">deleteUser</td>
+        <td class="cellBorder">/profile/<span
+            style="color:rgb(162, 159, 159); font-style: italic;">:Username</span>/account</td>
+        <td class="cellBorder">DELETE</td>
+        <td class="cellBorder">user.<span style="color:rgb(162, 159, 159); font-style: italic;">Username</span></td>
+        <td class="cellBorder" style="text-align: left; border-right: none;">A message indicating the user has been
+          deleted sucessfully</td>
+      </tr>
+      <tr>
+        <td class="cellBorder">addFavMovie</td>
+        <td class="cellBorder">/profile/<span
+            style="color:rgb(162, 159, 159); font-style: italic;">:Username</span>/movies/<span
+            style="color:rgb(162, 159, 159); font-style: italic;">:movieId</span></td>
+        <td class="cellBorder">POST</td>
+        <td class="cellBorder">user.<span style="color:rgb(162, 159, 159); font-style: italic;">Username</span>,
+          movie.<span style="color:rgb(162, 159, 159); font-style: italic;">_id</span></td>
+        <td class="cellBorder" style="text-align: left; border-right: none;">A JSON object of the user data, example:
+          <br>
+          <br>{
+          <br>id: <span style="color:rgb(162, 159, 159); font-style: italic;">{number}</span>,
+          <br>Username: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Password: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Email: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Birthday: <span style="color:rgb(162, 159, 159); font-style: italic;">{date}</span>,
+          <br>FavoriteMovies: <span style="color:rgb(162, 159, 159); font-style: italic;">[ {movie}, {new movie}
+            ]</span>
+          <br>}
+        </td>
+      </tr>
+      <tr>
+        <td class="bottomCellBorder">deleteFavMovie</td>
+        <td class="bottomCellBorder">/profile/<span
+            style="color:rgb(162, 159, 159); font-style: italic;">:Username</span>/movies/<span
+            style="color:rgb(162, 159, 159); font-style: italic;">:movieId</span></td>
+        <td class="bottomCellBorder">DELETE</td>
+        <td class="bottomCellBorder">user.<span style="color:rgb(162, 159, 159); font-style: italic;">Username</span>,
+          movie.<span style="color:rgb(162, 159, 159); font-style: italic;">_id</span></td>
+        <td class="bottomCellBorder" style="text-align: left; border: none;">A JSON object of the user data, example:
+          <br>
+          <br>{
+          <br>id: <span style="color:rgb(162, 159, 159); font-style: italic;">{number}</span>,
+          <br>Username: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Password: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Email: <span style="color:rgb(162, 159, 159); font-style: italic;">{string}</span>,
+          <br>Birthday: <span style="color:rgb(162, 159, 159); font-style: italic;">{date}</span>,
+          <br>FavoriteMovies: <span style="color:rgb(162, 159, 159); font-style: italic;">[ {movie} ]</span>
+          <br>}
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </body>
+
 </html>
