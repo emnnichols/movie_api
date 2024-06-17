@@ -15,7 +15,8 @@ const Users = Models.User;
 const app = express();
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), { flags: 'a' })
 
-// mongoose.connect('mongodb://localhost:27017/myflixDB', { useNewUrlParser: true, useUnifiedTopology: true});
+// mongoose.connect('mongodb://localhost:27017/myflixDB', 
+// { useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(morgan('combined', { stream: accessLogStream }));
@@ -24,7 +25,11 @@ app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:1234', 'https://ghibli-flix.netlify.app', 'http://localhost:4200/'];
+let allowedOrigins = [
+  'http://localhost:1234',
+  'https://ghibli-flix.netlify.app',
+  'http://localhost:4200',
+  'https://emnnichols.github.io'];
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -41,12 +46,28 @@ let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
 
-// Index page
+/**
+ * @file Defines the endpoints available to the myFlix API
+ */
+
+/**
+ * Welcome message shown when API is opened
+ * @name /
+ * @memberof module:routes
+ * @returns {string} Welcome message
+ */
 app.get('/', (req, res) => {
   res.send('Welcome to myFlix!');
 })
 
-// Get list of all movies
+/**
+ * Get a list of all movies
+ * @name getAllMovies
+ * @function
+ * @param {express.Request} req
+ * @param {express.Response} res - JSON object
+ * @returns {Object[]} Array of all movies in database
+ */
 app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.find()
     .then((movies) => {
@@ -58,7 +79,14 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), async (req,
     });
 });
 
-// Get data about single movie
+/**
+ * Get data about single movie
+ * @name getSingleMovie
+ * @function
+ * @param {express.Request} req - Movie ID
+ * @param {express.Response} res - Movie object
+ * @returns {Object} The movie object that includes the title, summary, poster, director, genre, and release year
+ */
 app.get('/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.findOne(req.params.MovieID)
     .then((movie) => {
@@ -70,7 +98,14 @@ app.get('/movies/:movieId', passport.authenticate('jwt', { session: false }), as
     });
 });
 
-// Get a list of movies by year
+/**
+ * Get a list of movies by year
+ * @name getMoviesByYear
+ * @function
+ * @param {express.Request} req - Year
+ * @param {express.Response} res - JSON object of movies
+ * @returns {Objecy[]} Array of movies with a release year matching the req
+ */
 app.get('/movies/year/:released', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.find({ Released: req.params.released })
     .then((movies) => {
@@ -82,7 +117,14 @@ app.get('/movies/year/:released', passport.authenticate('jwt', { session: false 
     });
 });
 
-// Get list of movies by genre
+/**
+ * Get list of movies by genre
+ * @name getMoviesByGenre
+ * @function
+ * @param {express.Request} req - Genre name
+ * @param {express.Response} res - JSON object of movies
+ * @returns {Object[]} Array of movies with the genre matching the req
+ */
 app.get('/movies/genres/:genre', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.find({ "Genre.Name": req.params.genre })
     .then((movies) => {
@@ -94,7 +136,14 @@ app.get('/movies/genres/:genre', passport.authenticate('jwt', { session: false }
     });
 });
 
-// Get data about a genre
+/**
+ * Get data about a genre
+ * @name getGenre
+ * @function
+ * @param {express.Request} req - Genre name
+ * @param {express.Response} res - JSON object for genre
+ * @returns {Object} The genre object that includes the genre name and description
+ */
 app.get('/movies/genres/:genre/about', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.findOne({ "Genre.Name": req.params.genre })
     .then((movie) => {
@@ -106,7 +155,14 @@ app.get('/movies/genres/:genre/about', passport.authenticate('jwt', { session: f
     });
 });
 
-// Get list of movies by director
+/**
+ * Get list of movies by director
+ * @name getMoviesByDirector
+ * @function
+ * @param {express.Request} req - Director name
+ * @param {express.Response} res - JSON object of movies
+ * @returns {Object[]} Array of movies that have a director name matching the req
+ */
 app.get('/movies/directors/:director', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.find({ "Director.Name": req.params.director })
     .then((movies) => {
@@ -118,7 +174,14 @@ app.get('/movies/directors/:director', passport.authenticate('jwt', { session: f
     });
 });
 
-// Get data about a director
+/**
+ * Get data about a director
+ * @name getDirector
+ * @function
+ * @param {express.Request} req - Director name
+ * @param {express.Response} res - JSON object for director
+ * @returns {Object} The director object that includes directors name, biography, and death and/or birth dates
+ */
 app.get('/movies/directors/:director/about', passport.authenticate('jwt', { session: false }), async (req, res) => {
   await Movies.findOne({ "Director.Name": req.params.director })
     .then((movie) => {
@@ -130,7 +193,15 @@ app.get('/movies/directors/:director/about', passport.authenticate('jwt', { sess
     });
 });
 
-// Get list of users
+/**
+ * Get list of users
+ * @name getUsers
+ * @memberof module:routes
+ * @function
+ * @param {express.Request} req
+ * @param {express.Response} res - JSON object for user
+ * @returns {Object[]} Array of users
+ */
 app.get('/profile', passport.authenticate('jwt', { session: false }), async (req, res) => {
   // if(req.user.Username !== req.params.Username){
   //     return res.status(400).send('Permission denied');
@@ -145,7 +216,14 @@ app.get('/profile', passport.authenticate('jwt', { session: false }), async (req
     });
 });
 
-// Get a user by username
+/** 
+ * Get a user by username
+ * @name getUserByUsername
+ * @function
+ * @param {express.Request} req - Username of logged in user
+ * @param {express.Response} res - JSON object for user
+ * @returns {Object} The user object that includes username, birthday, email, and favorite movies
+ */
 app.get('/profile/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
   if (req.user.Username !== req.params.Username) {
     return res.status(400).send('Permission denied');
@@ -160,14 +238,27 @@ app.get('/profile/:Username', passport.authenticate('jwt', { session: false }), 
     });
 });
 
-// Add user
+/**
+ * Add user
+ * @name userRegistration
+ * @function
+ * @param {express.Request} req - Object of user details (username, password, email, birthday)
+ * @param {express.Response} res - JSON object for user
+ * @returns {message|Object} Message stating username already exists, OR, returns the user object (on successful registration)
+ */
 app.post('/signup',
   [
-    check('Username', 'Username is required').not().isEmpty(),
-    check('Username', 'Username is too short').isLength({ min: 5 }),
-    check('Username', 'Username contains non alphanumeric characters').isAlphanumeric(),
-    check('Password', 'Password is required').not().isEmpty(),
-    check('Password', 'Password is too short').isLength({ min: 8 }),
+    check('Username')
+      .notEmpty()
+      .withMessage('Username is required')
+      .isLength({ min: 5 })
+      .withMessage('Username is too short')
+      .matches(/^[A-Za-z0-9 ._-]+$/),
+    check('Password')
+      .notEmpty()
+      .withMessage('Password is required')
+      .isLength({ min: 8 })
+      .withMessage('Password is too short'),
     check('Email', 'Email does not appear to be valid').isEmail()
   ], async (req, res) => {
 
@@ -203,14 +294,27 @@ app.post('/signup',
       })
   })
 
-// Update user info by username
+/**
+ * Update user info by username
+ * @name updateUser
+ * @function
+ * @param {express.Request} req - Username of logged in user AND updated user details
+ * @param {express.Response} res - JSON object for user
+ * @returns {Object} The user object that includes the updated details
+ */
 app.put('/profile/:Username/account',
   [
-    check('Username', 'Username is required').not().isEmpty(),
-    check('Username', 'Username is too short').isLength({ min: 5 }),
-    check('Username', 'Username contains non alphanumeric characters').isAlphanumeric(),
-    check('Password', 'Password is required').not().isEmpty(),
-    check('Password', 'Password is too short').isLength({ min: 8 }),
+    check('Username')
+      .notEmpty()
+      .withMessage('Username is required')
+      .isLength({ min: 5 })
+      .withMessage('Username is too short')
+      .matches(/^[A-Za-z0-9 ._-]+$/),
+    check('Password')
+      .notEmpty()
+      .withMessage('Password is required')
+      .isLength({ min: 8 })
+      .withMessage('Password is too short'),
     check('Email', 'Email does not appear to be valid').isEmail()
   ], passport.authenticate('jwt', { session: false }), async (req, res) => {
 
@@ -245,7 +349,14 @@ app.put('/profile/:Username/account',
       })
   });
 
-// Delete user by username
+/**
+ * Delete user by username
+ * @name deleteUser
+ * @function
+ * @param {express.Request} req - Username of logged in user
+ * @param {express.Response} res - JSON object
+ * @returns {message|Object} Message stating user was not found, OR, object for successful user deletion
+ */
 app.delete('/profile/:Username/account', passport.authenticate('jwt', { session: false }), async (req, res) => {
   if (req.user.Username !== req.params.Username) {
     return res.status(400).send('Permission denied');
@@ -255,7 +366,7 @@ app.delete('/profile/:Username/account', passport.authenticate('jwt', { session:
       if (!user) {
         res.status(400).send(req.params.Username + ' was not found');
       } else {
-        res.status(200).send(req.params.Username + ' was deleted.');
+        res.status(200).json(req.params.Username + ' was deleted.');
       }
     })
     .catch((err) => {
@@ -264,7 +375,14 @@ app.delete('/profile/:Username/account', passport.authenticate('jwt', { session:
     });
 });
 
-// Add movie to favorites
+/**
+ * Add movie to favorites
+ * @name addFavMovie
+ * @function
+ * @param {express.Request} req - Username of logged in user AND movie ID
+ * @param {express.Response} res - JSON object for user
+ * @returns {Object[]} Array of user's favorite movies that reflects the addition
+ */
 app.post('/profile/:Username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
   if (req.user.Username !== req.params.Username) {
     return res.status(400).send('Permission denied');
@@ -282,7 +400,14 @@ app.post('/profile/:Username/movies/:movieId', passport.authenticate('jwt', { se
     });
 });
 
-// Delete movie from favorites
+/**
+ * Delete movie from favorites
+ * @name deleteFavMovie
+ * @function
+ * @param {express.Request} req - Username of logged in user AND movie ID
+ * @param {express.Response} res - JSON object for user
+ * @returns {Object[]} Array of user's favorite movies that reflect deletion
+ */
 app.delete('/profile/:Username/movies/:movieId', passport.authenticate('jwt', { session: false }), async (req, res) => {
   if (req.user.Username !== req.params.Username) {
     return res.status(400).send('Permission denied');
@@ -301,6 +426,10 @@ app.delete('/profile/:Username/movies/:movieId', passport.authenticate('jwt', { 
 });
 
 // Get API documentation
+/**
+ * @name API Documentation
+ * @see {@link https://myflix-ghibli-7c8d5913b80b.herokuapp.com/documentation myFlix Documentation} for more information
+ */
 app.get('/documentation', (req, res) => {
   res.sendFile('public/documentation.html', { root: __dirname });
 });
